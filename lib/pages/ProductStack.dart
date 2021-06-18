@@ -13,14 +13,14 @@ class _ProductStackState extends State<ProductStack> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      initialRoute: 'ProductStack/product',
+      initialRoute: 'productstack/product',
       onGenerateRoute: (RouteSettings settings) {
         WidgetBuilder builder;
         switch (settings.name) {
-          case 'ProductStack/product':
+          case 'productstack/product':
             builder = (BuildContext context) => ProductPage();
             break;
-          case 'ProductStack/detail':
+          case 'productstack/detail':
             builder = (BuildContext context) => DetailPage();
             break;
           default:
