@@ -13,6 +13,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   List<Course> course = [];
+  bool isLoading = true;
 
   _getData()async{
     var url = Uri.parse('https://api.codingthailand.com/api/course');
@@ -27,6 +28,7 @@ class _ProductPageState extends State<ProductPage> {
       final Product product = Product.fromJson(convert.jsonDecode(response.body));
       setState(() {
         course = product.course;
+        isLoading = false;
       });
 
     } else {
@@ -51,18 +53,22 @@ class _ProductPageState extends State<ProductPage> {
           title: Text('สินค้า')
         //Text(widget.title),
       ),
-      body: ListView.separated(
+      body: isLoading == true ?
+          Center(
+            child: CircularProgressIndicator(),
+          )
+          : ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               leading: Container(
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  image: DecorationImage(
-                    image: NetworkImage(course[index].picture),
-                    fit: BoxFit.cover
-                  )
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                        image: NetworkImage(course[index].picture),
+                        fit: BoxFit.cover
+                    )
                 ),
               ),
               // title: Text('item $index'),
