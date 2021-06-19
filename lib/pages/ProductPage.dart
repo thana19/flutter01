@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter01/data/ScreenArguments.dart';
-import 'package:flutter01/widgets/logo.dart';
+import 'package:flutter01/models/product.dart';
 import 'package:flutter01/widgets/menu.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class ProductPage extends StatefulWidget {
   ProductPage({Key? key}) : super(key: key);
@@ -11,6 +12,35 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  List<Course> course = [];
+
+  _getData()async{
+    var url = Uri.parse('https://api.codingthailand.com/api/course');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // var jsonResponse =
+      // convert.jsonDecode(response.body) as Map<String, dynamic>;
+      // var itemCount = jsonResponse['totalItems'];
+      // print('Number of books about http: $itemCount.');
+      // print(response.body);
+
+      final Product product = Product.fromJson(convert.jsonDecode(response.body));
+      setState(() {
+        course = product.course;
+      });
+
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +51,29 @@ class _ProductPageState extends State<ProductPage> {
           title: Text('สินค้า')
         //Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'สินค้า',
-            ),
-
-          ],
-        ),
-      ),
+      body: ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              leading: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  image: DecorationImage(
+                    image: NetworkImage(course[index].picture),
+                    fit: BoxFit.cover
+                  )
+                ),
+              ),
+              // title: Text('item $index'),
+              title: Text(course[index].title),
+              subtitle: Text(course[index].detail),
+              trailing: Icon(Icons.arrow_right),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) => const Divider(),
+          itemCount: course.length
+      )
     );
   }
 

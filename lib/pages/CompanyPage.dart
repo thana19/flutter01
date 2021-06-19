@@ -16,10 +16,11 @@ class _CompanyPageState extends State<CompanyPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image(
-                image: AssetImage('images/bg.png')
+              image: AssetImage('images/bg.png'),
+              height: 100,
             ),
             SafeArea(
                 child: Padding(
@@ -33,7 +34,7 @@ class _CompanyPageState extends State<CompanyPage> {
                           'Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, '
                           'the 1960s with the release'),
                       Divider(),
-                      SizedBox(height: 20,),
+                      SizedBox(height: 10,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -56,13 +57,15 @@ class _CompanyPageState extends State<CompanyPage> {
                       Wrap(
                         spacing: 4,
                         children:
-                          List.generate(10, (index) => Chip(
-                            label: Text('Text1 '),
-                            avatar: Icon(Icons.save_outlined),
+                          List.generate(8, (index) => Chip(
+                            label: Text('Text1 ${index+1}'),
+                            avatar: Icon(Icons.star),
                             backgroundColor: Colors.red,
                           ),)
-                      )
-                    ],
+                      ),
+                      Divider(),
+                      buildRowFooter()
+                  ],
                   ),
                 )
             )
@@ -70,6 +73,37 @@ class _CompanyPageState extends State<CompanyPage> {
         ),
       )
     );
+  }
+
+  Row buildRowFooter() {
+    return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage('images/thana.jpg'),
+                        radius: 40,
+                      ),
+                      CircleAvatar(
+                        backgroundImage: AssetImage('images/thana.jpg'),
+                        radius: 40,
+                      ),
+                      CircleAvatar(
+                        backgroundImage: AssetImage('images/thana.jpg'),
+                        radius: 40,
+                      ),
+                      SizedBox(
+                        width: 60,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(Icons.business),
+                            Icon(Icons.scanner),
+                            Icon(Icons.edit_location_outlined),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
   }
 
   void openHomePage() {
