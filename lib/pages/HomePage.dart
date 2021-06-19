@@ -22,38 +22,94 @@ class _HomePageState extends State<HomePage> {
           title: const Logo()
         //Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'HomePage',
-            ),
-            // Text('from about page sent message is ${result ?? ''}'),
-            Text('from about page sent message is $result'),
-            TextButton(
-                onPressed: () {
-                  openAboutPage(context);
-                  },
-                child: Text('เปิดหน้าเกี่ยวกับเรา')
-            ),
-            TextButton(
-                onPressed: () async {
-                  result = await Navigator.pushNamed(
-                      context,
-                      'homestack//about',
-                      arguments:ScreenArguments('thana.j@gmail.com', "0840866680")
-                  );
-
-                  ScaffoldMessenger.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(content: Text('$result')));
-                },
-                child: Text('เปิดหน้าเกี่ยวกับเรา2')
-            )
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/bg2.png'),
+            fit: BoxFit.cover
+          )
         ),
-      ),
+        child: GridView.count(
+          primary: false,
+          padding: const EdgeInsets.all(20),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 2,
+          children: <Widget>[
+            GestureDetector(
+              onTap: ()async {
+                result = await Navigator.pushNamed(
+                    context,
+                    'homestack/company',
+                    arguments:ScreenArguments('thana.j@gmail.com', "0840866680")
+                );
+
+                ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text('$result')));
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.business, size: 80, color: Colors.red),
+                    Text('บริศัท', style: TextStyle(fontSize: 20),)
+                  ],
+                ),
+                color: Colors.teal[100],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.map, size: 80, color: Colors.red),
+                  Text('บริษัท', style: TextStyle(fontSize: 20),)
+                ],
+              ),
+              color: Colors.teal[100],
+            ),
+
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.camera, size: 80, color: Colors.red),
+                  Text('Camera', style: TextStyle(fontSize: 20),)
+                ],
+              ),
+              color: Colors.teal[100],
+            ),
+            GestureDetector(
+              onTap: ()async {
+                result = await Navigator.pushNamed(
+                    context,
+                    'homestack/about',
+                    arguments:ScreenArguments('thana.j@gmail.com', "0840866680")
+                );
+
+                ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text('$result')));
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.person, size: 80, color: Colors.red),
+                    Text('About', style: TextStyle(fontSize: 20),)
+                  ],
+                ),
+                color: Colors.teal[100],
+              ),
+            ),
+          ],
+        )
+      )
     );
   }
 

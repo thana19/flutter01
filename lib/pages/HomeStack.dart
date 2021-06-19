@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter01/pages/AboutPage.dart';
+import 'package:flutter01/pages/CompanyPage.dart';
 import 'package:flutter01/pages/ContactPage.dart';
 import 'package:flutter01/pages/HomePage.dart';
 
@@ -23,6 +24,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case 'homestack/about':
             builder = (BuildContext context) => AboutPage();
+            break;
+          case 'homestack/company':
+            builder = (BuildContext context) => CompanyPage();
             break;
           case 'homestack/contact':
             builder = (BuildContext context) => ContactPage();
