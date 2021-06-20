@@ -19,11 +19,6 @@ class _ProductPageState extends State<ProductPage> {
     var url = Uri.parse('https://api.codingthailand.com/api/course');
     var response = await http.get(url);
     if (response.statusCode == 200) {
-      // var jsonResponse =
-      // convert.jsonDecode(response.body) as Map<String, dynamic>;
-      // var itemCount = jsonResponse['totalItems'];
-      // print('Number of books about http: $itemCount.');
-      // print(response.body);
 
       final Product product = Product.fromJson(convert.jsonDecode(response.body));
       setState(() {
@@ -75,6 +70,16 @@ class _ProductPageState extends State<ProductPage> {
               title: Text(course[index].title),
               subtitle: Text(course[index].detail),
               trailing: Icon(Icons.arrow_right),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  'productstack/detail',
+                  arguments: {
+                    'id': course[index].id,
+                    'title': course[index].title,
+                  }
+                );
+              },
             );
           },
           separatorBuilder: (BuildContext context, int index) => const Divider(),
