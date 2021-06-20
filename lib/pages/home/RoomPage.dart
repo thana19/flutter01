@@ -18,21 +18,18 @@ class _RoomPageState extends State<RoomPage> {
     var url = Uri.parse('https://codingthailand.com/api/get_rooms.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
-
       final List<dynamic> hotel = convert.jsonDecode(response.body);
       setState(() {
         room = hotel;
         // room = convert.jsonDecode(response.body);
         isLoading = false;
       });
-
     } else {
       setState(() {
         isLoading = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
-
   }
 
   @override
