@@ -31,7 +31,6 @@ class _MenuState extends State<Menu> {
             title: Text('หน้าหลัก'),
             // selected: true,
             selected: ModalRoute.of(context)!.settings.name == 'homestack/home' ? true : false ,
-            // selected: ModalRoute.of(context)!.settings.name == '/' ? true : false,
             trailing: Icon(Icons.arrow_right),
             onTap: () {
               Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil('/', (route) => false);
@@ -40,11 +39,19 @@ class _MenuState extends State<Menu> {
           ListTile(
             leading: Icon(Icons.account_circle),
             title: Text('สินค้า'),
-            // selected: ModalRoute.of(context)!.settings.name == '/productstack' ? false : true ,
             selected: ModalRoute.of(context)!.settings.name == 'productstack/product' ? true : false ,
             trailing: Icon(Icons.arrow_right),
             onTap: () {
               Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil('/productstack', (route) => false);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('สินค้า dynamic'),
+            selected: ModalRoute.of(context)!.settings.name == 'productstack2/product2' ? true : false ,
+            trailing: Icon(Icons.arrow_right),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil('/productstack2', (route) => false);
             },
           ),
           ListTile(

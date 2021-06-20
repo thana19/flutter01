@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.business, size: 80, color: Colors.red),
-                    Text('บริศัท', style: TextStyle(fontSize: 20),)
+                    Text('company', style: TextStyle(fontSize: 20),)
                   ],
                 ),
                 color: Colors.teal[100],
@@ -102,6 +102,25 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Icon(Icons.person, size: 80, color: Colors.red),
                     Text('About', style: TextStyle(fontSize: 20),)
+                  ],
+                ),
+                color: Colors.teal[100],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                    Navigator.pushNamed(
+                    context,
+                    'homestack/room',
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.person, size: 80, color: Colors.red),
+                    Text('Room', style: TextStyle(fontSize: 20),)
                   ],
                 ),
                 color: Colors.teal[100],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter01/pages/DetailPage.dart';
-import 'package:flutter01/pages/ProductPage.dart';
+import 'package:flutter01/pages/product/DetailPage.dart';
+import 'package:flutter01/pages/product/ProductPage.dart';
 
 class ProductStack extends StatefulWidget {
   const ProductStack({Key? key}) : super(key: key);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter01/pages/AboutPage.dart';
-import 'package:flutter01/pages/CompanyPage.dart';
-import 'package:flutter01/pages/ContactPage.dart';
-import 'package:flutter01/pages/HomePage.dart';
+import 'package:flutter01/pages/home/AboutPage.dart';
+import 'package:flutter01/pages/home/CompanyPage.dart';
+import 'package:flutter01/pages/home/ContactPage.dart';
+import 'package:flutter01/pages/home/HomePage.dart';
+import 'package:flutter01/pages/home/RoomPage.dart';
 
 class HomeStack extends StatefulWidget {
   const HomeStack({Key? key}) : super(key: key);
@@ -30,6 +31,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case 'homestack/contact':
             builder = (BuildContext context) => ContactPage();
+            break;
+          case 'homestack/room':
+            builder = (BuildContext context) => RoomPage();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');
