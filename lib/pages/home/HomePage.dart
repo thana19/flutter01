@@ -126,6 +126,25 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.teal[100],
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  'homestack/news',
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.fiber_new_sharp, size: 80, color: Colors.red),
+                    Text('News', style: TextStyle(fontSize: 20),)
+                  ],
+                ),
+                color: Colors.teal[100],
+              ),
+            ),
           ],
         )
       )
