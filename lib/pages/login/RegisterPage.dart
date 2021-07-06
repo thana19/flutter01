@@ -14,9 +14,14 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool isLoading = false ;
 
   _register(var values) async {
-    print(values);
+    // print(values);
+    setState(() {
+      isLoading = true ;
+    });
+
 
     var url = Uri.parse('https://api.codingthailand.com/api/register');
     var response = await http.post(
@@ -34,6 +39,9 @@ class _RegisterPageState extends State<RegisterPage> {
     var bodw = convert.jsonDecode(response.body);
 
     if (response.statusCode == 201){
+      setState(() {
+        isLoading = false ;
+      });
       print(response.body);
       print(bodw['message']);
       final snackBar = SnackBar(content: Text(bodw['message']));
@@ -44,9 +52,12 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
     }else {
-      print(bodw['errors']);
+      setState(() {
+        isLoading = false ;
+      });
+      print(bodw['errors']['email']);
       print(values['dob'].toString().substring(0, 10));
-      final snackBar2 = SnackBar(content: Text('error'));
+      final snackBar2 = SnackBar(content: Text(bodw['errors']['email'][0]));
       ScaffoldMessenger.of(context).showSnackBar(snackBar2);
     }
   }
@@ -163,9 +174,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: 200,
                           child: MaterialButton(
                             color: Theme.of(context).accentColor,
-                            child: Text(
-                              "Register",
-                              style: TextStyle(color: Colors.white),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                isLoading ==true ? CircularProgressIndicator() : Text(''),
+                                Text(
+                                  "Register",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
                             ),
                             onPressed: () {
                               _formKey.currentState!.save();
