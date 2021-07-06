@@ -24,6 +24,10 @@ class _NewsPageState extends State<NewsPage> {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+    setState(() {
+      page = 1;
+    });
+    // _refreshController.resetNoData();
     _getData();
     _refreshController.refreshCompleted();
   }
@@ -50,7 +54,8 @@ class _NewsPageState extends State<NewsPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> news = convert.jsonDecode(response.body);
         setState(() {
-          articles.addAll(news['articles']);
+          page == 1 ? articles = news['articles']:
+            articles.addAll(news['articles']);
           totalResults = news['totalResults'];
           isLoading = false;
         });
@@ -90,11 +95,10 @@ class _NewsPageState extends State<NewsPage> {
           : SmartRefresher(
               enablePullDown: true,
               enablePullUp: true,
-              header: ClassicHeader(
-                refreshingText: 'wait',
-              ),
+              // header: ClassicHeader(
+              //   refreshingText: 'wait',
+              // ),
               // footer: ClassicFooter();
-
               controller: _refreshController,
               onRefresh: _onRefresh,
               onLoading: _onLoading,
