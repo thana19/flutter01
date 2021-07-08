@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,6 +15,100 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool isLoading = false ;
+  late SharedPreferences prefs ;
+
+  _initPref() async {
+    prefs = await SharedPreferences.getInstance();
+    // int counter = (prefs.getInt('counter') ?? 0) + 1;
+    // print('Pressed $counter times.');
+    // await prefs.setInt('counter', counter);
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _initPref();
+  }
+
+  _login(var values) async {
+    // print(values);
+    setState(() {
+      isLoading = true ;
+    });
+
+    var url = Uri.parse('https://api.codingthailand.com/api/login');
+    var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: convert.jsonEncode({
+          'email': values['email'],
+          'password': values['password']
+        })
+    );
+
+    var body = convert.jsonDecode(response.body);
+
+    if (response.statusCode == 200){
+      setState(() {
+        isLoading = false ;
+      });
+      // print(response.body);
+      // print(body['access_token']);
+      final snackBar = SnackBar(content: Text(body['access_token']));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      //save token to pref
+      await prefs.setString('token', response.body);
+
+      //get profile
+      _getProfile();
+
+      //open home
+      Navigator.pushNamedAndRemoveUntil(context, '/homestack', (Route<dynamic> route) => false);
+
+      // Future.delayed(Duration(seconds: 3),(){
+      //   Navigator.pop(context);
+      // });
+
+    }else {
+      setState(() {
+        isLoading = false ;
+      });
+      print(body['message']);
+     
+      final snackBar2 = SnackBar(content: Text(body['message']));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+    }
+  }
+
+  Future<void> _getProfile() async{
+    //get token from pref
+    var tokenString = prefs.getString('token');
+    var token = convert.jsonDecode(tokenString!);
+    print(token['access_token']);
+
+    //http get profile
+    var url = Uri.parse('https://api.codingthailand.com/api/profile');
+    var response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${token['access_token']}',
+        },
+    );
+    var body = convert.jsonDecode(response.body);
+    if (response.statusCode == 200){
+      print(response.body);
+    }else{
+      print(response.body);
+      print(body['message']);
+    }
+
+    //save profile to pref
+    await prefs.setString('user', body['data']['user']);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                             labelText: 'Password',
                             fillColor: Colors.white,
                             filled: true,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
+                              border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)))
                           ),
                           // onChanged: _onChanged,
                           // valueTransformer: (text) => num.tryParse(text),
@@ -97,6 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                               _formKey.currentState!.save();
                               if (_formKey.currentState!.validate()) {
                                 print(_formKey.currentState!.value);
+                                _login(_formKey.currentState!.value);
                               } else {
                                 print("validation failed");
                               }
