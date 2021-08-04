@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter01/pages/home/AboutPage.dart';
 import 'package:flutter01/pages/home/CompanyPage.dart';
 import 'package:flutter01/pages/home/ContactPage.dart';
+import 'package:flutter01/pages/home/EditProfilePage.dart';
 import 'package:flutter01/pages/home/HomePage.dart';
 import 'package:flutter01/pages/news/NewsPage.dart';
 import 'package:flutter01/pages/home/RoomPage.dart';
@@ -38,6 +39,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case 'homestack/news':
             builder = (BuildContext context) => NewsPage();
+            break;
+          case 'homestack/editprofile':
+            builder = (BuildContext context) => EditProfilePage();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');

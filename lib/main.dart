@@ -5,8 +5,13 @@ import 'package:flutter01/pages/login/RegisterPage.dart';
 import 'package:flutter01/pages/news/NewsStack.dart';
 import 'package:flutter01/pages/product/ProductStack.dart';
 import 'package:flutter01/pages/product2/ProductStack2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+String? token;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  token = prefs.getString('token');
   runApp(MyApp());
 }
 
@@ -23,7 +28,8 @@ class MyApp extends StatelessWidget {
       // home: HomePage(),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => token == null ? LoginPage() : HomeStack(),
+        '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
         '/homestack': (context) => HomeStack(),
         '/productstack': (context) => ProductStack(),
@@ -34,4 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
