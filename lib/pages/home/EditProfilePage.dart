@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter01/redux/appReducer.dart';
+import 'package:flutter01/redux/profile/profileAction.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -58,9 +61,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
       await prefs.setString(
           'profile', convert.jsonEncode(body['data']['user']));
 
+      // call action
+      final store = StoreProvider.of<AppState>(context);
+      store.dispatch(getProfileAction(body['data']['user']));
+
       //open home
-      Navigator.pushNamedAndRemoveUntil(
-          context, 'homestack/home', (Route<dynamic> route) => false);
+      // Navigator.pushNamedAndRemoveUntil(
+      // context, 'homestack/home', (Route<dynamic> route) => false);
+      Navigator.pushNamed(context, 'homestack/home');
     } else {
       setState(() {
         isLoading = false;

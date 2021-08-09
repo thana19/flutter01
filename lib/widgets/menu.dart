@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter01/redux/appReducer.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:flutter01/data/ScreenArguments.dart';
@@ -13,16 +15,16 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  Map<String, dynamic> profile = {'name': '', 'email': '', 'role': ''};
+  // Map<String, dynamic> profile = {'name': '', 'email': '', 'role': ''};
 
   _getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var profileString = prefs.getString('profile');
     print(profileString);
     if (profileString != null) {
-      setState(() {
-        profile = convert.jsonDecode(profileString);
-      });
+      // setState(() {
+      //   profile = convert.jsonDecode(profileString);
+      // });
     }
   }
 
@@ -51,26 +53,51 @@ class _MenuState extends State<Menu> {
           //     ),
           //   ),
           // ),
-          UserAccountsDrawerHeader(
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage('images/thana.jpg'),
-            ),
-            accountName: Text('${profile['name']}'),
-            accountEmail: Text('${profile['email']}'),
-            otherAccountsPictures: [
-              IconButton(
-                  onPressed: () {
-                    // Navigator.pushNamedAndRemoveUntil(
-                    //     context,
-                    //     'homestack/editprofile',
-                    //     (Route<dynamic> route) => false);
-                    Navigator.pushNamed(context, 'homestack/editprofile',
-                        arguments:
-                            ScreenArguments(profile['name'], profile['email']));
-                  },
-                  icon: Icon(Icons.edit))
-            ],
-          ),
+          // UserAccountsDrawerHeader(
+          //   currentAccountPicture: CircleAvatar(
+          //     backgroundImage: AssetImage('images/thana.jpg'),
+          //   ),
+          //   accountName: Text('${profile['name']}'),
+          //   accountEmail: Text('${profile['email']}'),
+          //   otherAccountsPictures: [
+          //     IconButton(
+          //         onPressed: () {
+          //           // Navigator.pushNamedAndRemoveUntil(
+          //           //     context,
+          //           //     'homestack/editprofile',
+          //           //     (Route<dynamic> route) => false);
+          //           Navigator.pushNamed(context, 'homestack/editprofile',
+          //               arguments:
+          //                   ScreenArguments(profile['name'], profile['email']));
+          //         },
+          //         icon: Icon(Icons.edit))
+          //   ],
+          // ),
+          StoreConnector<AppState, Map<String, dynamic>>(
+              distinct: true,
+              converter: (store) => store.state.profileState.profile,
+              builder: (context, profile) {
+                return UserAccountsDrawerHeader(
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: AssetImage('images/thana.jpg'),
+                  ),
+                  accountName: Text('${profile['name']}'),
+                  accountEmail: Text('${profile['email']}'),
+                  otherAccountsPictures: [
+                    IconButton(
+                        onPressed: () {
+                          // Navigator.pushNamedAndRemoveUntil(
+                          //     context,
+                          //     'homestack/editprofile',
+                          //     (Route<dynamic> route) => false);
+                          Navigator.pushNamed(context, 'homestack/editprofile',
+                              arguments: ScreenArguments(
+                                  profile['name'], profile['email']));
+                        },
+                        icon: Icon(Icons.edit))
+                  ],
+                );
+              }),
           ListTile(
             leading: Icon(Icons.message),
             title: Text('หน้าหลัก'),

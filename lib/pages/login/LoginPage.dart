@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter01/redux/appReducer.dart';
+import 'package:flutter01/redux/profile/profileAction.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -59,14 +62,14 @@ class _LoginPageState extends State<LoginPage> {
       //get profile
       _getProfile();
 
-      //open home
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/homestack', (Route<dynamic> route) => false);
+      // open home
+      // Navigator.pushNamedAndRemoveUntil(
+      //     context, '/homestack', (Route<dynamic> route) => false);
+      Navigator.pushNamed(context, '/homestack');
 
-      // Future.delayed(Duration(seconds: 3),(){
+      // Future.delayed(Duration(seconds: 3), () {
       //   Navigator.pop(context);
       // });
-
     } else {
       setState(() {
         isLoading = false;
@@ -101,6 +104,10 @@ class _LoginPageState extends State<LoginPage> {
           'profile', convert.jsonEncode(body['data']['user']));
       print('pref profile');
       print(prefs.getString('profile'));
+
+      // call action
+      final store = StoreProvider.of<AppState>(context);
+      store.dispatch(getProfileAction(body['data']['user']));
     } else {
       print(response.body);
       print(body['message']);
